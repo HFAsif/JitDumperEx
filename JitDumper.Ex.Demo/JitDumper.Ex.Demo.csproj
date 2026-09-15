@@ -14,7 +14,7 @@
       below Dependencies\.
     -->
     <LoaderExDependenciesRelativePath>Dependencies\</LoaderExDependenciesRelativePath>
-    <DotnetExVersion>4.1.46</DotnetExVersion>
+    <DotnetExVersion>4.1.60</DotnetExVersion>
   </PropertyGroup>
 
   <ItemGroup>
