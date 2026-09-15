@@ -13,6 +13,8 @@ It captures method IL through the CLR JIT pipeline, shows decoded IL and readabl
 - Rebuilds captured methods into a dumped executable or assembly
 - Works with legacy .NET Framework applications
 
+> **AnyCPU note:** AnyCPU compatibility has not been fully tested yet, but you are welcome to try it and share your results.
+
 ## Project Status
 
 The project is under active development and testing across multiple .NET Framework targets and architectures.
