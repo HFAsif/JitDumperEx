@@ -23,6 +23,7 @@
     <PackageReference Include="DotnetEx.Microsoft.Extensions.Logging.Abstractions.Ex" Version="$(DotnetExVersion)" />
     <PackageReference Include="DotnetEx.System.Reflection.Metadata.Ex" Version="$(DotnetExVersion)" />
     <PackageReference Include="DotnetEx.System.Runtime.CompilerServices.Unsafe.Ex" Version="$(DotnetExVersion)" />
+    <PackageReference Include="DotnetEx.System.Runtime.Loader.Ex" Version="$(DotnetExVersion)" />
   </ItemGroup>
 
   <!--
