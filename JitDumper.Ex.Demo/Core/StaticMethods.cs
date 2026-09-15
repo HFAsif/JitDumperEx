@@ -228,7 +228,7 @@ namespace LoaderExDemo
                             ThisStaticClass.Logger.LogInformation("[ASMLOAD] Target assembly loaded after ExecuteExe. You works will do here ");
                             ThisStaticClass.Logger.LogInformation("[ASMLOAD] ========================================================== ");
                             ThisStaticClass.Logger.LogInformation("[ASMLOAD] Press enter to run the application ");
-
+                            Console.ReadLine();
                         }
                     }
                 }
