@@ -1,0 +1,3 @@
+[submodule "VarifiedTargets"]
+	path = VarifiedTargets
+	url = https://github.com/HFAsif/VarifiedTargets.git
