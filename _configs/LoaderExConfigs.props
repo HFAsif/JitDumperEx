@@ -1,0 +1,12 @@
+<Project>
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>net20;net40</TargetFrameworks>
+		<LangVersion>14.0</LangVersion>
+		<Platforms>AnyCPU;x64;x86</Platforms>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	
+	
+</Project>

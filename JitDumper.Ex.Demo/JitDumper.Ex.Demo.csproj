@@ -1,0 +1,100 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(SolutionDir)_configs\LoaderExConfigs.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!--<DefineConstants>$(DefineConstants);LOADEREX_VMP35_CFLOW</DefineConstants>-->
+
+    <!--
+      Standard .NET Framework probing requires LoaderExDemo.exe.config beside
+      LoaderExDemo.exe. Everything else produced at the output root is routed
+      below Dependencies\.
+    -->
+    <LoaderExDependenciesRelativePath>Dependencies\</LoaderExDependenciesRelativePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HFDotnetEx.Helpers" Version="4.1.45" />
+
+    <PackageReference Include="DotnetEx.Microsoft.Bcl.AsyncInterfaces.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.Microsoft.CSharp.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.Microsoft.Extensions.DependencyInjection.Abstractions.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.Microsoft.Extensions.Logging.Abstractions.Ex" Version="4.1.45" />
+
+    <PackageReference Include="DotnetEx.System.Buffers.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Collections.Immutable.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Core.Ex.Combined" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Diagnostics.DiagnosticSource.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Dynamic.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Dynamic.Runtime.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Linq.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Memory.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Net.Http.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Reflection.Metadata.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Runtime.CompilerServices.Unsafe.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Runtime.Loader.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Runtime.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Text.Json.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Text.RegularExpressions.Ex" Version="4.1.45" />
+    <PackageReference Include="DotnetEx.System.Threading.Tasks.Extensions.Ex" Version="4.1.45" />
+  </ItemGroup>
+
+  <!--
+    Remove output left by the superseded executable-name dependency layout.
+    A Windows directory and the LoaderExDemo.exe file cannot share the same path.
+    Also clear the old LoaderExDemo folder layout and this build's private dependency root so stale package assets cannot
+    survive an incremental rebuild. This never deletes the executable file itself.
+  -->
+  <Target Name="LoaderExPreparePrivateDependencies"
+          BeforeTargets="_CopyFilesMarkedCopyLocal">
+    <RemoveDir Directories="$(TargetDir)$(TargetFileName)"
+               Condition="$([System.IO.Directory]::Exists('$(TargetDir)$(TargetFileName)'))" />
+    <RemoveDir Directories="$(TargetDir)$(MSBuildProjectName)"
+               Condition="$([System.IO.Directory]::Exists('$(TargetDir)$(MSBuildProjectName)'))" />
+    <RemoveDir Directories="$(TargetDir)$(LoaderExDependenciesRelativePath)"
+               Condition="$([System.IO.Directory]::Exists('$(TargetDir)$(LoaderExDependenciesRelativePath)'))" />
+    <MakeDir Directories="$(TargetDir)$(LoaderExDependenciesRelativePath)" />
+  </Target>
+
+  <!--
+    Route every resolved CopyLocal reference directly into the private probing
+    directory. Existing DestinationSubDirectory metadata is retained so
+    satellite/runtime assets keep their own relative structure.
+  -->
+  <Target Name="LoaderExRouteCopyLocalReferences"
+          BeforeTargets="_CopyFilesMarkedCopyLocal">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Update="@(ReferenceCopyLocalPaths)">
+        <DestinationSubDirectory>$(LoaderExDependenciesRelativePath)%(ReferenceCopyLocalPaths.DestinationSubDirectory)</DestinationSubDirectory>
+      </ReferenceCopyLocalPaths>
+    </ItemGroup>
+  </Target>
+
+  <!--
+    Output hygiene fallback for common build/reference artifacts that can still be
+    emitted at the root by the compiler or package targets. Directory globs are
+    intentionally avoided so the Dependencies directory itself
+    can never be mistaken for a file. The EXE and its required EXE.CONFIG remain.
+  -->
+  <Target Name="LoaderExCleanOutputRoot"
+          AfterTargets="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <_LoaderExRootArtifacts Include="$(TargetDir)*.dll;$(TargetDir)*.dll.config;$(TargetDir)*.pdb;$(TargetDir)*.xml;$(TargetDir)*.json" />
+    </ItemGroup>
+
+    <MakeDir Directories="$(TargetDir)$(LoaderExDependenciesRelativePath)"
+             Condition="'@(_LoaderExRootArtifacts)' != ''" />
+
+    <Copy SourceFiles="@(_LoaderExRootArtifacts)"
+          DestinationFolder="$(TargetDir)$(LoaderExDependenciesRelativePath)"
+          SkipUnchangedFiles="true"
+          Condition="'@(_LoaderExRootArtifacts)' != ''" />
+
+    <Delete Files="@(_LoaderExRootArtifacts)"
+            Condition="'@(_LoaderExRootArtifacts)' != ''" />
+  </Target>
+
+</Project>

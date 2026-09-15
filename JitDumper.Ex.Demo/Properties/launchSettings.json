@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LoaderExDemo": {
+      "commandName": "Project",
+      "debugEngines": "managed"
+    }
+  }
+}
