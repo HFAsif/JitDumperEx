@@ -1,0 +1,114 @@
+JitDumperEx Source-Available No-Modification License v1.0
+
+Copyright (c) 2026 HFAsif. All rights reserved.
+
+This software, including all source code, binaries, documentation, project files,
+assets, designs, algorithms, and related materials (collectively, the "Software"),
+is proprietary copyrighted work owned by HFAsif.
+
+1. PERMITTED USE
+
+Subject to the terms of this License, you are granted a limited, non-exclusive,
+non-transferable, revocable right to:
+
+- view and study the publicly available source code;
+- download or clone an unmodified copy of the Software;
+- compile and run the Software in its original, unmodified form; and
+- use the unmodified Software for personal, educational, evaluation, research,
+  or internal purposes.
+
+No ownership or intellectual-property rights are transferred to you.
+
+2. NO MODIFICATION OR DERIVATIVE WORKS
+
+You may not modify, alter, adapt, translate, patch, refactor, rewrite, extend,
+port, transform, reverse-engineer for the purpose of creating a competing or
+modified work, or otherwise create any derivative work based on the Software,
+in whole or in part, without prior written permission from the copyright owner.
+
+3. NO COPYING INTO OTHER PROJECTS
+
+You may not copy, extract, transplant, reuse, incorporate, reproduce, or adapt
+any source code, implementation, algorithm, design, structure, substantial
+portion, or distinctive part of the Software into another project, product,
+repository, library, application, service, or codebase without prior written
+permission.
+
+4. NO REDISTRIBUTION, REPACKAGING, OR REBRANDING
+
+You may not redistribute, publish, mirror, host, upload, sublicense, sell,
+license, lease, rent, bundle, repackage, rebrand, white-label, or otherwise
+make the Software or any modified or derivative version available to another
+party without prior written permission.
+
+This restriction also applies to binaries, source archives, forks, republished
+repositories, package feeds, installers, and other redistributed forms, except
+for technical copies or platform operations that are strictly required by the
+terms of the hosting service and do not grant broader rights to the Software.
+
+5. NO COMMERCIAL EXPLOITATION
+
+You may not sell, monetize, commercially redistribute, commercially license,
+include in a paid product or service, or otherwise exploit the Software for
+commercial gain without prior written permission.
+
+6. NO REMOVAL OF OWNERSHIP OR ATTRIBUTION
+
+You may not remove, hide, replace, alter, falsify, or obscure any copyright,
+license, ownership, attribution, author, project, trademark, or provenance
+notice associated with the Software.
+
+You may not claim authorship, ownership, originality, or exclusive rights over
+the Software or any part of it.
+
+7. NO RELICENSING
+
+You may not place the Software, any substantial part of it, or any derivative
+work under another license. You may not represent the Software as open source,
+public domain, freely relicensable, or licensed under MIT, Apache, GPL, BSD, or
+any other license unless the copyright owner expressly authorizes this in
+writing.
+
+8. NO CIRCUMVENTION
+
+You may not bypass, disable, remove, or circumvent technical, licensing,
+attribution, access-control, or integrity mechanisms included with the Software
+for the purpose of violating this License.
+
+9. PERMISSION FOR EXCEPTIONS
+
+Any activity not expressly permitted by this License requires prior written
+permission from HFAsif. Permission for one use does not create permission for
+any other use.
+
+10. TERMINATION
+
+Your rights under this License terminate automatically and immediately if you
+violate any term of this License. Upon termination, you must stop using the
+Software and delete all unauthorized copies, modified versions, derivative
+works, and redistributed materials in your possession or control.
+
+11. ENFORCEMENT
+
+Unauthorized copying, modification, redistribution, rebranding, relicensing,
+commercial exploitation, removal of attribution, or creation of derivative
+works may constitute copyright infringement and may result in legal action and
+other remedies available under applicable law.
+
+12. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT,
+ACCURACY, RELIABILITY, OR FITNESS FOR ANY PARTICULAR USE.
+
+IN NO EVENT SHALL THE COPYRIGHT OWNER BE LIABLE FOR ANY CLAIM, DAMAGES, LOSS,
+LIABILITY, OR OTHER CONSEQUENCE ARISING FROM THE SOFTWARE OR ITS USE.
+
+13. RESERVATION OF RIGHTS
+
+All rights not expressly granted by this License are reserved by HFAsif.
+
+By accessing, downloading, cloning, compiling, running, or otherwise using the
+Software, you acknowledge that you have read, understood, and agreed to these
+terms.
