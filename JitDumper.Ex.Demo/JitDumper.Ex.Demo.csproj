@@ -14,32 +14,15 @@
       below Dependencies\.
     -->
     <LoaderExDependenciesRelativePath>Dependencies\</LoaderExDependenciesRelativePath>
+    <DotnetExVersion>4.1.46</DotnetExVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HFDotnetEx.Helpers" Version="4.1.45" />
-
-    <PackageReference Include="DotnetEx.Microsoft.Bcl.AsyncInterfaces.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.Microsoft.CSharp.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.Microsoft.Extensions.DependencyInjection.Abstractions.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.Microsoft.Extensions.Logging.Abstractions.Ex" Version="4.1.45" />
-
-    <PackageReference Include="DotnetEx.System.Buffers.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Collections.Immutable.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Core.Ex.Combined" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Diagnostics.DiagnosticSource.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Dynamic.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Dynamic.Runtime.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Linq.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Memory.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Net.Http.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Reflection.Metadata.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Runtime.CompilerServices.Unsafe.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Runtime.Loader.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Runtime.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Text.Json.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Text.RegularExpressions.Ex" Version="4.1.45" />
-    <PackageReference Include="DotnetEx.System.Threading.Tasks.Extensions.Ex" Version="4.1.45" />
+    <PackageReference Include="HFDotnetEx.Helpers" Version="$(DotnetExVersion)" />
+    <PackageReference Include="DotnetEx.Microsoft.CSharp.Ex" Version="$(DotnetExVersion)" />
+    <PackageReference Include="DotnetEx.Microsoft.Extensions.Logging.Abstractions.Ex" Version="$(DotnetExVersion)" />
+    <PackageReference Include="DotnetEx.System.Reflection.Metadata.Ex" Version="$(DotnetExVersion)" />
+    <PackageReference Include="DotnetEx.System.Runtime.CompilerServices.Unsafe.Ex" Version="$(DotnetExVersion)" />
   </ItemGroup>
 
   <!--
