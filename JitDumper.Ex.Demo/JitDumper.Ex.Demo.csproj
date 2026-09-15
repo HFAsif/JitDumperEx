@@ -11,7 +11,8 @@
     <!--
       Standard .NET Framework probing requires LoaderExDemo.exe.config beside
       LoaderExDemo.exe. Everything else produced at the output root is routed
-      below Dependencies\.
+      below Dependencies\, except the primary application PDB which stays beside
+      the executable for normal debugging/symbol discovery.
     -->
     <LoaderExDependenciesRelativePath>Dependencies\</LoaderExDependenciesRelativePath>
     <DotnetExVersion>4.1.60</DotnetExVersion>
@@ -61,12 +62,15 @@
     Output hygiene fallback for common build/reference artifacts that can still be
     emitted at the root by the compiler or package targets. Directory globs are
     intentionally avoided so the Dependencies directory itself
-    can never be mistaken for a file. The EXE and its required EXE.CONFIG remain.
+    can never be mistaken for a file. The EXE, its required EXE.CONFIG, and the
+    primary application PDB remain beside each other.
   -->
   <Target Name="LoaderExCleanOutputRoot"
           AfterTargets="CopyFilesToOutputDirectory">
     <ItemGroup>
-      <_LoaderExRootArtifacts Include="$(TargetDir)*.dll;$(TargetDir)*.dll.config;$(TargetDir)*.pdb;$(TargetDir)*.xml;$(TargetDir)*.json" />
+      <_LoaderExRootArtifacts Include="$(TargetDir)*.dll;$(TargetDir)*.dll.config;$(TargetDir)*.xml;$(TargetDir)*.json" />
+      <_LoaderExRootArtifacts Include="$(TargetDir)*.pdb"
+                              Exclude="$(TargetDir)$(TargetName).pdb" />
     </ItemGroup>
 
     <MakeDir Directories="$(TargetDir)$(LoaderExDependenciesRelativePath)"
