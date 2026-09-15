@@ -28,27 +28,41 @@ namespace LoaderExDemo
 
         [HelperClass.SomeElementsInfos("Prints raw IL, decoded IL and C#.")]
         public static void LogMethod(JitMethodDescriptor method, in JitMethodContext context, in JitMethodBodyMetadata body)
+            => ThisStaticClass.Logger.LogInformation("{JitMethodBody}", BuildMethodLog(
+                method, context.ILBytes, context.EHCount, context.Options, context.ExceptionRegionsFromJit,
+                context.NativeEntry, context.NativeSizeOfCode, in body));
+
+        public static string BuildMethodLog(
+            JitMethodDescriptor method,
+            ImmutableArray<byte> ilBytes,
+            uint ehCount,
+            uint options,
+            bool exceptionRegionsFromJit,
+            nint nativeEntry,
+            uint nativeSizeOfCode,
+            in JitMethodBodyMetadata body)
         {
+            ReadOnlySpan<byte> ilCode = ilBytes.AsSpan();
             StringBuilder output = new(4096);
             output.Append("[JIT] Token=0x").Append(method.MetadataToken.ToString("X8"))
                 .Append(" | Method=").Append(GetMethodName(method.Method))
-                .Append(" | ILSize=").Append(context.ILCode.Length)
+                .Append(" | ILSize=").Append(ilCode.Length)
                 .Append(" | MaxStack=").Append(body.MaxStack)
-                .Append(" | EHCount=").Append(context.EHCount)
-                .Append(" | EHSource=").Append(context.ExceptionRegionsFromJit ? "JIT" : "Metadata")
-                .Append(" | Options=0x").Append(context.Options.ToString("X8"))
+                .Append(" | EHCount=").Append(ehCount)
+                .Append(" | EHSource=").Append(exceptionRegionsFromJit ? "JIT" : "Metadata")
+                .Append(" | Options=0x").Append(options.ToString("X8"))
                 .Append(" | InitLocals=").Append(body.InitLocals)
                 .Append(" | LocalSig=0x").Append(body.LocalSignatureToken.ToString("X8"))
-                .Append(" | NativeEntry=0x").Append(StaticMethods.NativeAddressValue(context.NativeEntry).ToString("X"))
-                .Append(" | NativeSize=").Append(context.NativeSizeOfCode)
+                .Append(" | NativeEntry=0x").Append(StaticMethods.NativeAddressValue(nativeEntry).ToString("X"))
+                .Append(" | NativeSize=").Append(nativeSizeOfCode)
                 .AppendLine();
 
-            output.Append("[JIT-RAW] ").AppendLine(FormatBytes(context.ILCode));
+            output.Append("[JIT-RAW] ").AppendLine(FormatBytes(ilCode));
 
             ImmutableArray<JitIlInstruction> instructions = ImmutableArray<JitIlInstruction>.Empty;
             try
             {
-                instructions = DecodeInstructions(context.ILCode, method.Method);
+                instructions = DecodeInstructions(ilCode, method.Method);
                 output.AppendLine("[JIT-IL]");
                 AppendDecodedInstructions(instructions, output);
             }
@@ -93,7 +107,7 @@ namespace LoaderExDemo
                 }
             }
 
-            ThisStaticClass.Logger.LogInformation("{JitMethodBody}", output.ToString().TrimEnd());
+            return output.ToString().TrimEnd();
         }
 
         private static ImmutableArray<JitIlInstruction> DecodeInstructions(ReadOnlySpan<byte> il, MethodBase method)

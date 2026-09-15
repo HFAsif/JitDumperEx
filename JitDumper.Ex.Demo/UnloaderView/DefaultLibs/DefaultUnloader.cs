@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace LoaderExDemo
@@ -10,6 +11,7 @@ namespace LoaderExDemo
 
         private readonly object _captureLock = new();
         private readonly Dictionary<int, JitMethodSnapshot> _capturedMethods = new();
+        private readonly Dictionary<int, JitMethodDiagnosticSnapshot> _capturedDiagnostics = new();
         private JitMethodTable? _methodTable;
 
         public override void JitDump(Assembly assembly, string targetPath, Action<string> log, int flag)
@@ -25,7 +27,10 @@ namespace LoaderExDemo
             this.flag = flag;
 
             lock (_captureLock)
+            {
                 _capturedMethods.Clear();
+                _capturedDiagnostics.Clear();
+            }
 
             Thread thread = new(JitDumpCore) { Name = "LoaderExDemo.JitDump" };
             thread.SetApartmentState(ApartmentState.STA);
@@ -55,9 +60,14 @@ namespace LoaderExDemo
                 }
 
                 JitMethodSnapshot[] capturedMethods;
+                JitMethodDiagnosticSnapshot[] capturedDiagnostics;
                 lock (_captureLock)
+                {
                     capturedMethods = [.. _capturedMethods.Values];
+                    capturedDiagnostics = [.. _capturedDiagnostics.Values];
+                }
 
+                ProcessCapturedDiagnosticsAsync(capturedDiagnostics).GetAwaiter().GetResult();
                 JitTargetRebuilder.Rebuild(TargetAssembly.Location, TargetPath, capturedMethods);
                 Log($"[JIT-DUMP] Completed. Captured={capturedMethods.Length}; Output={TargetPath}");
             }
@@ -90,23 +100,66 @@ namespace LoaderExDemo
 
 
 
-            lock (_captureLock)
-                _capturedMethods[descriptor.MetadataToken] = snapshot;
+            JitMethodDiagnosticSnapshot diagnostic = new(
+                descriptor,
+                context.ILBytes,
+                context.EHCount,
+                context.Options,
+                context.ExceptionRegionsFromJit,
+                context.NativeEntry,
+                context.NativeSizeOfCode,
+                body);
 
-            try
+            lock (_captureLock)
             {
-                JitIlDecoder.LogMethod(descriptor, in context, in body);
+                _capturedMethods[descriptor.MetadataToken] = snapshot;
+                _capturedDiagnostics[descriptor.MetadataToken] = diagnostic;
             }
-            catch (Exception ex)
+        }
+
+        private static async Task ProcessCapturedDiagnosticsAsync(JitMethodDiagnosticSnapshot[] diagnostics)
+        {
+            if (diagnostics.Length == 0)
+                return;
+
+            Array.Sort(diagnostics, static (left, right) => left.Descriptor.RowId.CompareTo(right.Descriptor.RowId));
+
+            string[] rendered = new string[diagnostics.Length];
+            int[] indexes = new int[diagnostics.Length];
+            for (int i = 0; i < indexes.Length; i++)
+                indexes[i] = i;
+
+            ParallelOptions options = new()
             {
+                MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1)
+            };
+
+            await Parallel.ForEachAsync(indexes, options, (index, _) =>
+            {
+                JitMethodDiagnosticSnapshot diagnostic = diagnostics[index];
                 try
                 {
-                    ThisStaticClass.Logger.LogWarning(ex, "[JIT-IL] Decode/logging failed for token 0x{Token:X8}; captured body retained.", descriptor.MetadataToken);
+                    JitMethodBodyMetadata body = diagnostic.Body;
+                    rendered[index] = JitIlDecoder.BuildMethodLog(
+                        diagnostic.Descriptor,
+                        diagnostic.ILCode,
+                        diagnostic.EHCount,
+                        diagnostic.Options,
+                        diagnostic.ExceptionRegionsFromJit,
+                        diagnostic.NativeEntry,
+                        diagnostic.NativeSizeOfCode,
+                        in body);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    rendered[index] = $"[JIT-IL] Decode/logging failed for token 0x{diagnostic.Descriptor.MetadataToken:X8}; captured body retained. {ex}";
                 }
-            }
+
+                return default(ValueTask);
+            }).ConfigureAwait(false);
+
+            for (int i = 0; i < rendered.Length; i++)
+                ThisStaticClass.Logger.LogInformation("{JitMethodBody}", rendered[i]);
         }
 
         private static JitMethodBodyMetadata ResolveBodyMetadata(JitMethodDescriptor descriptor, in JitMethodContext context)

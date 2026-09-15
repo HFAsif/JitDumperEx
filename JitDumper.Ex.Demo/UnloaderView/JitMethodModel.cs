@@ -1,4 +1,4 @@
-﻿using System.Collections.Frozen;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using System.Reflection;
 
@@ -45,6 +45,16 @@ namespace LoaderExDemo
         public ImmutableArray<RuntimeMethodHandle> MethodHandles { get; } = methodHandles;
         public FrozenDictionary<nint, JitMethodDescriptor> ByHandle { get; } = byHandle;
     }
+
+    internal readonly record struct JitMethodDiagnosticSnapshot(
+        JitMethodDescriptor Descriptor,
+        ImmutableArray<byte> ILCode,
+        uint EHCount,
+        uint Options,
+        bool ExceptionRegionsFromJit,
+        nint NativeEntry,
+        uint NativeSizeOfCode,
+        JitMethodBodyMetadata Body);
 
     internal readonly record struct JitMethodSnapshot(
         int MetadataToken,
