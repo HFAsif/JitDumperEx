@@ -16,7 +16,7 @@
       the executable for normal debugging/symbol discovery.
     -->
     <LoaderExDependenciesRelativePath>Dependencies\</LoaderExDependenciesRelativePath>
-    <DotnetExVersion>4.1.60</DotnetExVersion>
+    <DotnetExVersion>4.1.70</DotnetExVersion>
   </PropertyGroup>
 
   <ItemGroup>
