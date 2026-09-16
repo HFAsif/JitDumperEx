@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <!--<DefineConstants>$(DefineConstants);LOADEREX_VMP35_CFLOW</DefineConstants>-->
