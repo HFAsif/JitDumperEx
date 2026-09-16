@@ -10,7 +10,7 @@ namespace LoaderExDemo
     /// </summary>
     internal static class MemoryView
     {
-#if NET35 || NET20
+#if NET35 || NET30 || NET20
         public const string _clrLib = "mscorwks.dll";
 #elif NET40_OR_GREATER
         public const string _clrLib = "clr.dll";
