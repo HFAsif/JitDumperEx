@@ -1,11 +1,5 @@
 # JitDumperEx — Dump JIT-Generated Code via ExecuteEXE & ExecuteDLLForAttach
 
-JitDumperEx is an experimental offline JIT dumping and reconstruction project for the .NET Framework runtime family, covering **.NET Framework 2.0 through 4.8** through CLR2 and CLR4 execution paths.
-
-The current project builds target **net20** and **net40** as the CLR2/CLR4 compatibility bases. Architecture-specific release binaries are provided for **x86** and **x64**. **AnyCPU is configured in the project but has not been validated yet.**
-
-JitDumperEx loads managed targets through `ExecuteEXE` and `ExecuteDLLForAttach`, resolves the active CLR execution path, discovers the `PEDecoder::IsILOnly` gate, hooks the first `ICorJitCompiler` vtable entry (`compileMethod`), captures methods as they are compiled by the CLR JIT, and rebuilds the captured method data into a dumped PE for offline inspection.
-
 ## Highlights
 
 - CLR2 and CLR4 runtime handling across the .NET Framework 2.0–4.8 runtime family
